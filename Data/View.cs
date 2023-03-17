@@ -19,6 +19,13 @@ namespace Tachimi.Data
         [DisplayName("host")]
         public string Host { get; set; }
         [Timestamp]
+        public string Description { get; set; } = String.Empty;
+        public string Hashtags { get; set; } = String.Empty;
+
+        public string Password { get; set; } = String.Empty;
+        public byte[] Image { get; set; }
+        public string CreatorId { get; set; } = String.Empty;
+        public string Salt { get; set; }
         public byte[] RowVersion { get; set; }
     }
 }
