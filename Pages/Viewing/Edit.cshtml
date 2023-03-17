@@ -1,0 +1,55 @@
+﻿@page
+@model Tachimi.Pages.Viewing.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>View</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="View.Id" />
+            <div class="form-group">
+                <label asp-for="View.Title" class="control-label"></label>
+                <input asp-for="View.Title" class="form-control" />
+                <span asp-validation-for="View.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.Genre" class="control-label"></label>
+                <input asp-for="View.Genre" class="form-control" />
+                <span asp-validation-for="View.Genre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.Medium" class="control-label"></label>
+                <input asp-for="View.Medium" class="form-control" />
+                <span asp-validation-for="View.Medium" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="View.Live" /> @Html.DisplayNameFor(model => model.View.Live)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.Host" class="control-label"></label>
+                <input asp-for="View.Host" class="form-control" />
+                <span asp-validation-for="View.Host" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

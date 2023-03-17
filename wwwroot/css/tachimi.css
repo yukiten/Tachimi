@@ -1,0 +1,66 @@
+﻿#messagesList {
+    width: auto;
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 15px;
+}
+
+.coment-input {
+    /*position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;*/
+    z-index: 1;
+    background-color: #14191b;
+    color: #fff;
+    padding: 20px;
+}
+
+#userInput,
+#messageInput {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #fff;
+    color: #fff;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 5px 0;
+    width: calc(50% - 5px); /*5pxはmargin-rightの値 */
+}
+
+    #userInput:focus,
+    #messageInput:focus {
+        outline: none;
+        border-bottom: 2px solid #1da1f2;
+    }
+
+
+.clock {
+    font-family: 'Share Tech Mono', monospace;
+    color: #daf6ff;
+    text-shadow: 0 0 20px #0aafe6;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* 日付のスタイル */
+.clock-date {
+    font-size: 25px;
+}
+
+/* 時間のスタイル */
+.clock-time {
+    font-size: 100px;
+}
+
+/* 文字サイズ調整 */
+@media screen and (max-width: 500px) {
+    .clock-date {
+        font-size: 5vw;
+    }
+
+    .clock-time {
+        font-size: 20vw;
+    }
+}

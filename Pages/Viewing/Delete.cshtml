@@ -1,0 +1,58 @@
+﻿@page
+@model Tachimi.Pages.Viewing.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>View</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.View.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.View.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.View.Genre)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.View.Genre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.View.Medium)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.View.Medium)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.View.Live)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.View.Live)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.View.Host)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.View.Host)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.View.RowVersion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.View.RowVersion)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="View.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+html {
+  font-size: 14px;
+}
+
+body {
+    background-color: #03151e;
+    color: #e0e0e0;
+}
+
+th, td {
+    color: #e0e0e0;
+}
+
+.form-control {
+    background-color: #b1b1b1; /* フォームの背景色を灰色に変更 */
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
