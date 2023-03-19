@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tachimi.Data.Migrations
 {
-    public partial class AddViewModel1 : Migration
+    public partial class ViewModel3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,6 +22,7 @@ namespace Tachimi.Data.Migrations
                     Host = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", rowVersion: true, nullable: true),
                     Hashtags = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsTemporary = table.Column<bool>(type: "bit", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),

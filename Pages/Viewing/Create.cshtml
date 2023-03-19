@@ -1,6 +1,6 @@
 ﻿@page
 @model Tachimi.Pages.Viewing.CreateModel
-
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Create";
 }
@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="View.Title" class="control-label"></label>
@@ -34,12 +34,36 @@
                 </label>
             </div>
             <div class="form-group">
+                <label asp-for="View.Description" class="control-label"></label>
+                <input asp-for="View.Description" class="form-control" />
+                <span asp-validation-for="View.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.ImageFile" class="control-label"></label>
+                <input asp-for="View.ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="View.ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.Hashtags" class="control-label"></label>
+                <input asp-for="View.Hashtags" class="form-control" />
+                <span asp-validation-for="View.Hashtags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="View.Host" class="control-label"></label>
                 <input asp-for="View.Host" class="form-control" />
                 <span asp-validation-for="View.Host" class="text-danger"></span>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="View.IsTemporary" /> @Html.DisplayNameFor(model => model.View.IsTemporary)
+                </label>
+            </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="View.Password" class="control-label">Password</label>
+                <input asp-for="View.Password" class="form-control" id="passwordInput" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" id="createButton" />
             </div>
         </form>
     </div>
@@ -51,4 +75,29 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        const isTemporaryCheckbox = document.querySelector('input[name="View.IsTemporary"]');
+        const passwordInput = document.getElementById('passwordInput');
+        const createButton = document.getElementById('createButton');
+
+        function updateFormState() {
+            const isGuestUser = '@User.Identity.IsAuthenticated' === 'False';
+            const isTemporaryChecked = isTemporaryCheckbox.checked;
+
+            if (!isTemporaryChecked && (isGuestUser || !passwordInput.value)) {
+                passwordInput.disabled = true;
+                passwordInput.value = '';
+                createButton.disabled = true;
+            } else {
+                passwordInput.disabled = false;
+                createButton.disabled = false;
+            }
+        }
+
+        isTemporaryCheckbox.addEventListener('change', updateFormState);
+
+        // Initialize the form state.
+        updateFormState();
+    </script>
 }

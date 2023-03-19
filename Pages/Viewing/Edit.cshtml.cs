@@ -1,12 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Tachimi.Data;
+using Tachimi.Utilities;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Tachimi.Pages.Viewing
 {
@@ -20,7 +30,11 @@ namespace Tachimi.Pages.Viewing
         }
 
         [BindProperty]
-        public View View { get; set; } = default!;
+        public View View { get; set; }
+
+
+        [BindProperty]
+        public string InputPassword { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,48 +43,80 @@ namespace Tachimi.Pages.Viewing
                 return NotFound();
             }
 
-            var view =  await _context.Views.FirstOrDefaultAsync(m => m.Id == id);
+            var view = await _context.Views.FirstOrDefaultAsync(m => m.Id == id);
+
             if (view == null)
             {
                 return NotFound();
             }
-            View = view;
+            else
+            {
+                View = view;
+            }
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null || _context.Views == null)
             {
+                return NotFound();
+            }
+
+            var viewToUpdate = await _context.Views.FindAsync(id);
+
+            if (viewToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            // 現在のユーザーのIDを取得（nullの場合は未ログイン）
+            string currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // 現在のユーザーのIDと作成者IDが一致しない場合、エラーを表示
+            if (viewToUpdate.CreatorId != currentUserId)
+            {
+                ModelState.AddModelError(string.Empty, "You are not authorized to edit this item.");
                 return Page();
             }
 
-            _context.Attach(View).State = EntityState.Modified;
+            // 入力されたパスワードが空またはnullでないことを確認
+            if (string.IsNullOrEmpty(InputPassword))
+            {
+                ModelState.AddModelError(string.Empty, "Password is required.");
+                return Page();
+            }
 
-            try
+            // パスワードが一致するか確認
+            if (!PasswordHasher.VerifyPassword(InputPassword, viewToUpdate.Salt, viewToUpdate.Password))
+            {
+                ModelState.AddModelError(string.Empty, "Incorrect password.");
+                return Page();
+            }
+
+            // 画像ファイルをバイト配列に変換してモデルに格納
+            // 変更後
+            if (View.ImageFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await View.ImageFile.CopyToAsync(memoryStream);
+                    viewToUpdate.Image = memoryStream.ToArray();
+                }
+            }
+
+            if (await TryUpdateModelAsync<View>(
+                viewToUpdate,
+                "View",
+                v => v.Title, v => v.Genre, v => v.Medium, v => v.Live, v => v.Host))
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ViewExists(View.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
+            return Page();
         }
 
-        private bool ViewExists(int id)
-        {
-          return _context.Views.Any(e => e.Id == id);
-        }
     }
 }
+

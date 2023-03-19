@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tachimi.Data
 {
@@ -21,11 +22,14 @@ namespace Tachimi.Data
         [Timestamp]
         public string Description { get; set; } = String.Empty;
         public string Hashtags { get; set; } = String.Empty;
-
+        public bool IsTemporary { get; set; }
         public string Password { get; set; } = String.Empty;
         public byte[] Image { get; set; }
         public string CreatorId { get; set; } = String.Empty;
         public string Salt { get; set; }
         public byte[] RowVersion { get; set; }
+        [NotMapped]
+        [DisplayName("画像")]
+        public IFormFile ImageFile { get; set; }
     }
 }

@@ -252,6 +252,9 @@ namespace Tachimi.Data.Migrations
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<bool>("IsTemporary")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Live")
                         .HasColumnType("bit");
 

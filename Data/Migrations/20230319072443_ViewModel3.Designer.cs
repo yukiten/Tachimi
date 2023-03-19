@@ -12,8 +12,8 @@ using Tachimi.Data;
 namespace Tachimi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230317133927_AddViewModel1")]
-    partial class AddViewModel1
+    [Migration("20230319072443_ViewModel3")]
+    partial class ViewModel3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -253,6 +253,9 @@ namespace Tachimi.Data.Migrations
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<bool>("IsTemporary")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("Live")
                         .HasColumnType("bit");

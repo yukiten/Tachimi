@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="View.Id" />
             <div class="form-group">
@@ -35,9 +35,28 @@
                 </label>
             </div>
             <div class="form-group">
+                <label asp-for="View.Description" class="control-label"></label>
+                <input asp-for="View.Description" class="form-control" />
+                <span asp-validation-for="View.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.ImageFile" class="control-label"></label>
+                <input asp-for="View.ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="View.ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="View.Hashtags" class="control-label"></label>
+                <input asp-for="View.Hashtags" class="form-control" />
+                <span asp-validation-for="View.Hashtags" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="View.Host" class="control-label"></label>
                 <input asp-for="View.Host" class="form-control" />
                 <span asp-validation-for="View.Host" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="InputPassword" class="control-label">Input Password</label>
+                <input id="InputPassword" name="InputPassword" type="password" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
@@ -51,5 +70,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
