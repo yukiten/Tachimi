@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 body {
@@ -15,17 +15,23 @@ th, td {
     background-color: #b1b1b1; /* フォームの背景色を灰色に変更 */
 }
 
+.card-img-top {
+    object-fit: cover;
+    height: 200px; /* 画像の高さを指定 */
+    width: 100%; /* 画像の幅を100%に指定 */
+}
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }

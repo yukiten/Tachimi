@@ -19,13 +19,26 @@ namespace Tachimi.Pages.Viewing
         }
 
         public IList<View> View { get;set; } = default!;
+        public string CurrentFilter { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchHashtag)
         {
-            if (_context.Views != null)
-            {
-                View = await _context.Views.ToListAsync();
-            }
+            CurrentFilter = searchHashtag;
+            ViewData["HashtagFilter"] = searchHashtag;
+
+            var views = await _context.Views.ToListAsync();
+            View = FilterByHashtag(views, searchHashtag);
         }
+
+        public IList<View> FilterByHashtag(IList<View> views, string hashtag)
+        {
+            if (string.IsNullOrEmpty(hashtag))
+            {
+                return views;
+            }
+
+            return views.Where(v => v.Hashtags.Split(' ').Any(h => h.Equals(hashtag, StringComparison.OrdinalIgnoreCase))).ToList();
+        }
+
     }
 }

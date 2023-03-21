@@ -11,10 +11,19 @@
     <a asp-page="Create">Create New</a>
 </p>
 <div class="container">
+    <form asp-page="./Index" method="get">
+        <div class="input-group mb-3">
+            <input asp-for="CurrentFilter" name="searchHashtag" class="form-control" placeholder="ハッシュタグで検索" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">検索</button>
+            </div>
+        </div>
+    </form>
     <div class="row">
         @foreach (var item in Model.View)
         {
-            <div class="col-sm-4 mb-3">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+                <!-- ここでBootstrapのグリッドシステムを使用し、画面サイズに応じたカードの配置に変更 -->
                 <div class="card">
                     @if (item.Image != null)
                     {
@@ -22,11 +31,14 @@
                     }
                     <div class="card-body" style="background-color: #03151e;">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                        <p class="card-text">
-                            Genre: @Html.DisplayFor(modelItem => item.Genre) <br>
-                            Medium: @Html.DisplayFor(modelItem => item.Medium) <br>
-                            Live: @Html.DisplayFor(modelItem => item.Live) <br>
+                        <p class="card-text" style="font-size: 12px; color: #aaa;">
                             Host: @Html.DisplayFor(modelItem => item.Host)
+                        </p>
+                        <p class="card-text">
+                            @foreach (var hashtag in item.Hashtags.Split(' '))
+                            {
+                                <span class="badge badge-primary" style="font-size: 12px;">@hashtag</span>
+                            }
                         </p>
                         <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
                         <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>

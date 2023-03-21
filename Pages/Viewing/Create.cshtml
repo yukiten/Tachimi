@@ -43,11 +43,22 @@
                 <input asp-for="View.ImageFile" type="file" class="form-control" />
                 <span asp-validation-for="View.ImageFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="View.Hashtags" class="control-label"></label>
-                <input asp-for="View.Hashtags" class="form-control" />
-                <span asp-validation-for="View.Hashtags" class="text-danger"></span>
+            <input type="hidden" asp-for="View.Hashtags" id="hashtagsHiddenInput" />
+            <div id="hashtagContainer" class="form-group">
+                <div class="form-group">
+                    <label for="hashtagInput" class="control-label">Hashtags</label>
+                    <input id="hashtagInput" type="text" class="form-control" placeholder="Type hashtag and press Enter" />
+                    <span class="text-muted">Example: #event #music</span>
+                </div>
             </div>
+
+            <template id="hashtagTemplate">
+                <span class="hashtag">
+                    <span class="hashtag-text"></span>
+                    <button type="button" class="btn btn-sm btn-danger hashtag-delete">&times;</button>
+                </span>
+            </template>
+
             <div class="form-group">
                 <label asp-for="View.Host" class="control-label"></label>
                 <input asp-for="View.Host" class="form-control" />
@@ -74,7 +85,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script>
         const isTemporaryCheckbox = document.querySelector('input[name="View.IsTemporary"]');
@@ -99,5 +112,58 @@
 
         // Initialize the form state.
         updateFormState();
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const hashtagInput = document.getElementById('hashtagInput');
+            const hashtagContainer = document.getElementById('hashtagContainer');
+            const hashtagTemplate = document.getElementById('hashtagTemplate');
+
+            function createHashtagElement(text) {
+                const hashtagElement = hashtagTemplate.content.cloneNode(true);
+                const hashtagTextElement = hashtagElement.querySelector('.hashtag-text');
+                const deleteButton = hashtagElement.querySelector('.hashtag-delete');
+
+                hashtagTextElement.textContent = text;
+                deleteButton.addEventListener('click', () => {
+                    hashtagContainer.removeChild(hashtagElement);
+                });
+
+                return hashtagElement;
+            }
+
+            // Add this function to collect hashtags from the hashtag elements
+            function collectHashtags() {
+                const hashtagElements = hashtagContainer.querySelectorAll('.hashtag-text');
+                const hashtags = Array.from(hashtagElements).map((element) => element.textContent).join(' ');
+                return hashtags;
+            }
+
+            // Add this event listener to the form
+            document.querySelector('form').addEventListener('submit', (event) => {
+                const hashtags = collectHashtags();
+                document.getElementById('hashtagsHiddenInput').value = hashtags;
+            });
+
+            hashtagInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const hashtagValue = hashtagInput.value.trim();
+                    if (hashtagValue.length > 0 && hashtagValue[0] === '#') {
+                        const hashtagElement = createHashtagElement(hashtagValue);
+                        hashtagContainer.appendChild(hashtagElement);
+                        hashtagInput.value = '';
+                    }
+                }
+            });
+
+            hashtagInput.addEventListener('input', () => {
+                const hashtagValue = hashtagInput.value.trim();
+                if (hashtagValue.length > 0 && hashtagValue[0] !== '#') {
+                    hashtagInput.value = '#' + hashtagValue;
+                }
+            });
+        });
+
     </script>
 }
+

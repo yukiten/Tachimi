@@ -19,7 +19,6 @@ namespace Tachimi.Data
         public bool Live { get; set; }
         [DisplayName("host")]
         public string Host { get; set; }
-        [Timestamp]
         public string Description { get; set; } = String.Empty;
         public string Hashtags { get; set; } = String.Empty;
         public bool IsTemporary { get; set; }
@@ -27,6 +26,7 @@ namespace Tachimi.Data
         public byte[] Image { get; set; }
         public string CreatorId { get; set; } = String.Empty;
         public string Salt { get; set; }
+        [Timestamp]
         public byte[] RowVersion { get; set; }
         [NotMapped]
         [DisplayName("画像")]

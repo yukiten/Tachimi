@@ -95,7 +95,6 @@ namespace Tachimi.Pages.Viewing
             }
 
             // 画像ファイルをバイト配列に変換してモデルに格納
-            // 変更後
             if (View.ImageFile != null)
             {
                 using (var memoryStream = new MemoryStream())
@@ -108,15 +107,16 @@ namespace Tachimi.Pages.Viewing
             if (await TryUpdateModelAsync<View>(
                 viewToUpdate,
                 "View",
-                v => v.Title, v => v.Genre, v => v.Medium, v => v.Live, v => v.Host))
+                v => v.Title, v => v.Genre, v => v.Medium, v => v.Live, v => v.Host, v => v.Description, v => v.Hashtags))
             {
+                viewToUpdate.Description = View.Description;
+                viewToUpdate.Hashtags = View.Hashtags;
+
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
 
             return Page();
         }
-
     }
 }
-

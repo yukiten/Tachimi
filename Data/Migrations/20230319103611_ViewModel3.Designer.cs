@@ -12,7 +12,7 @@ using Tachimi.Data;
 namespace Tachimi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230319072443_ViewModel3")]
+    [Migration("20230319103611_ViewModel3")]
     partial class ViewModel3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,8 +238,6 @@ namespace Tachimi.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Genre")
@@ -268,7 +266,9 @@ namespace Tachimi.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("RowVersion")
-                        .HasColumnType("varbinary(max)");
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
